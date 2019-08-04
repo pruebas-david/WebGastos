@@ -10,6 +10,10 @@ namespace Data
     {
         static void Main(string[] args)
         {
+            using (AplicacionesEntities dbContext=new AplicacionesEntities())
+            {
+
+            }
         }
     }
 }

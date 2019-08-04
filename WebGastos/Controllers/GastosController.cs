@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebGastos.Models;
 
 namespace WebGastos.Controllers
 {
@@ -28,15 +30,31 @@ namespace WebGastos.Controllers
 
         // POST: Gastos/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Gasto param)
         {
             try
             {
-                // TODO: Add insert logic here
+                using (AplicacionesEntities db =new AplicacionesEntities())
+                {
+                    if (param.Fecha == null)
+                        param.Fecha = DateTime.UtcNow;
+
+                    db.Gastos.Add(new Data.Gastos
+                    {
+                        Descorta = param.Descorta,
+                        Deslarga = param.Deslarga,
+                        Fecha = param.Fecha.Value,
+                        Importe = param.Importe
+                    });
+
+                    db.SaveChanges();
+          
+                }
+
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }

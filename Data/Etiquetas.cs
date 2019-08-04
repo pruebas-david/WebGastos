@@ -14,18 +14,8 @@ namespace Data
     
     public partial class Etiquetas
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Etiquetas()
-        {
-            this.Gastos = new HashSet<Gastos>();
-        }
-    
         public int IdEtiqueta { get; set; }
         public Nullable<int> IdSeccion { get; set; }
         public string Descorta { get; set; }
-        public string Deslarga { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Gastos> Gastos { get; set; }
     }
 }

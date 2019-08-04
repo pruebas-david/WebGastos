@@ -9,72 +9,23 @@
           <Key>
             <PropertyRef Name="IdEtiqueta" />
           </Key>
-          <Property Name="IdEtiqueta" Type="int" Nullable="false" />
+          <Property Name="IdEtiqueta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdSeccion" Type="int" />
           <Property Name="Descorta" Type="nvarchar" MaxLength="250" />
-          <Property Name="Deslarga" Type="ntext" />
-        </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'Aplicaciones.WebGastos.EtiquetasGastos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="EtiquetasGastos">
-          <Key>
-            <PropertyRef Name="IdGasto" />
-            <PropertyRef Name="IdEtiqueta" />
-          </Key>
-          <Property Name="IdGasto" Type="int" Nullable="false" />
-          <Property Name="IdEtiqueta" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Gastos">
           <Key>
             <PropertyRef Name="IdGasto" />
           </Key>
-          <Property Name="IdGasto" Type="int" Nullable="false" />
+          <Property Name="IdGasto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Importe" Type="real" Nullable="false" />
           <Property Name="Fecha" Type="datetime" Nullable="false" />
-          <Property Name="Descorta" Type="nvarchar" MaxLength="250" />
-          <Property Name="Deslarga" Type="ntext" />
+          <Property Name="IdEtiqueta" Type="int" />
+          <Property Name="Descorta" Type="varchar" MaxLength="250" Nullable="false" />
         </EntityType>
-        <Association Name="FK_EtiquetasGastos_Etiquetas">
-          <End Role="Etiquetas" Type="Self.Etiquetas" Multiplicity="1" />
-          <End Role="EtiquetasGastos" Type="Self.EtiquetasGastos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Etiquetas">
-              <PropertyRef Name="IdEtiqueta" />
-            </Principal>
-            <Dependent Role="EtiquetasGastos">
-              <PropertyRef Name="IdEtiqueta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtiquetasGastos_Gastos">
-          <End Role="Gastos" Type="Self.Gastos" Multiplicity="1" />
-          <End Role="EtiquetasGastos" Type="Self.EtiquetasGastos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Gastos">
-              <PropertyRef Name="IdGasto" />
-            </Principal>
-            <Dependent Role="EtiquetasGastos">
-              <PropertyRef Name="IdGasto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="AplicacionesModelStoreContainer">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" Schema="WebGastos" store:Type="Tables" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" Schema="WebGastos" store:Type="Tables" />
-          <EntitySet Name="EtiquetasGastos" EntityType="Self.EtiquetasGastos" store:Type="Tables" store:Schema="WebGastos">
-            <DefiningQuery>SELECT 
-    [EtiquetasGastos].[IdGasto] AS [IdGasto], 
-    [EtiquetasGastos].[IdEtiqueta] AS [IdEtiqueta]
-    FROM [WebGastos].[EtiquetasGastos] AS [EtiquetasGastos]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK_EtiquetasGastos_Etiquetas" Association="Self.FK_EtiquetasGastos_Etiquetas">
-            <End Role="Etiquetas" EntitySet="Etiquetas" />
-            <End Role="EtiquetasGastos" EntitySet="EtiquetasGastos" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtiquetasGastos_Gastos" Association="Self.FK_EtiquetasGastos_Gastos">
-            <End Role="Gastos" EntitySet="Gastos" />
-            <End Role="EtiquetasGastos" EntitySet="EtiquetasGastos" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -85,48 +36,36 @@ advertencia 6002: La tabla o vista 'Aplicaciones.WebGastos.EtiquetasGastos' no t
           <Key>
             <PropertyRef Name="IdEtiqueta" />
           </Key>
-          <Property Name="IdEtiqueta" Type="Int32" Nullable="false" />
+          <Property Name="IdEtiqueta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdSeccion" Type="Int32" />
           <Property Name="Descorta" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Deslarga" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Gastos" Relationship="Self.EtiquetasGastos" FromRole="Etiquetas" ToRole="Gastos" />
         </EntityType>
         <EntityType Name="Gastos">
           <Key>
             <PropertyRef Name="IdGasto" />
           </Key>
-          <Property Name="IdGasto" Type="Int32" Nullable="false" />
+          <Property Name="IdGasto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Importe" Type="Single" Nullable="false" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Descorta" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Deslarga" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Etiquetas" Relationship="Self.EtiquetasGastos" FromRole="Gastos" ToRole="Etiquetas" />
+          <Property Name="IdEtiqueta" Type="Int32" />
+          <Property Name="Descorta" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <Association Name="EtiquetasGastos">
-          <End Role="Etiquetas" Type="Self.Etiquetas" Multiplicity="*" />
-          <End Role="Gastos" Type="Self.Gastos" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="AplicacionesEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AplicacionesEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" />
-          <AssociationSet Name="EtiquetasGastos" Association="Self.EtiquetasGastos">
-            <End Role="Etiquetas" EntitySet="Etiquetas" />
-            <End Role="Gastos" EntitySet="Gastos" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AplicacionesModelStoreContainer" CdmEntityContainer="AplicacionesEntities">
+        <EntityContainerMapping StorageEntityContainer="AplicacionesModelStoreContainer" CdmEntityContainer="AplicacionesEntities1">
           <EntitySetMapping Name="Etiquetas">
             <EntityTypeMapping TypeName="AplicacionesModel.Etiquetas">
               <MappingFragment StoreEntitySet="Etiquetas">
                 <ScalarProperty Name="IdEtiqueta" ColumnName="IdEtiqueta" />
                 <ScalarProperty Name="IdSeccion" ColumnName="IdSeccion" />
                 <ScalarProperty Name="Descorta" ColumnName="Descorta" />
-                <ScalarProperty Name="Deslarga" ColumnName="Deslarga" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -136,19 +75,11 @@ advertencia 6002: La tabla o vista 'Aplicaciones.WebGastos.EtiquetasGastos' no t
                 <ScalarProperty Name="IdGasto" ColumnName="IdGasto" />
                 <ScalarProperty Name="Importe" ColumnName="Importe" />
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IdEtiqueta" ColumnName="IdEtiqueta" />
                 <ScalarProperty Name="Descorta" ColumnName="Descorta" />
-                <ScalarProperty Name="Deslarga" ColumnName="Deslarga" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="EtiquetasGastos" TypeName="AplicacionesModel.EtiquetasGastos" StoreEntitySet="EtiquetasGastos">
-            <EndProperty Name="Etiquetas">
-              <ScalarProperty Name="IdEtiqueta" ColumnName="IdEtiqueta" />
-            </EndProperty>
-            <EndProperty Name="Gastos">
-              <ScalarProperty Name="IdGasto" ColumnName="IdGasto" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

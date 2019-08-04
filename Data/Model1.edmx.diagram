@@ -4,10 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0a850d8105a64096a2f89800bb55b888" Name="Diagram1">
-        <EntityTypeShape EntityType="AplicacionesModel.Etiquetas" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="AplicacionesModel.Gastos" Width="1.5" PointX="5.375" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="AplicacionesModel.EtiquetasGastos" ManuallyRouted="false" />
+      <Diagram DiagramId="d86bb113595c4087854dab337d02b967" Name="Diagram1">
+        <EntityTypeShape EntityType="AplicacionesModel.Etiquetas" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AplicacionesModel.Gastos" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

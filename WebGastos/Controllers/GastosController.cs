@@ -34,29 +34,125 @@ namespace WebGastos.Controllers
         {
             try
             {
-                using (AplicacionesEntities db =new AplicacionesEntities())
+                if (ModelState.IsValid)
                 {
-                    if (param.Fecha == null)
-                        param.Fecha = DateTime.UtcNow;
 
-                    db.Gastos.Add(new Data.Gastos
+                    //buscar etiqueta o crearlas
+                  
+                    using (AplicacionesEntities1 db = new AplicacionesEntities1())
                     {
-                        Descorta = param.Descorta,
-                        Deslarga = param.Deslarga,
-                        Fecha = param.Fecha.Value,
-                        Importe = param.Importe
-                    });
+                        var e = CrearEtiquetas(param.Etiquetas,db);
 
-                    db.SaveChanges();
-          
+
+                        if (param.Fecha == null)
+                            param.Fecha = DateTime.UtcNow;
+
+                        if (param.Descorta == null)
+                            param.Descorta = "";
+
+                        var aux = new Data.Gastos
+                        {
+                            Descorta = param.Descorta,
+                            Fecha = param.Fecha.Value,
+                            Importe = float.Parse(param.Importe.Replace('.', ',')),
+                            IdEtiqueta= e.IdEtiqueta
+                            
+                        };
+
+
+                        db.Gastos.Add(aux);
+                        db.SaveChanges();
+
+                        
+                        
+
+
+                    }
+
+
+                    return RedirectToAction("Index");
                 }
 
-
-                return RedirectToAction("Index");
+                else
+                    return View();
             }
             catch (Exception e)
             {
                 return View();
+            }
+        }
+
+        private Data.Etiquetas CrearEtiquetas(string etiquetas, AplicacionesEntities1 db)
+        {
+            try{
+                string[] et= etiquetas.Trim().Split('#');
+                var categoria = et.Length>1 ? et[1] :"";
+                var seccion = et.Length>2 ? et[2]: "";
+
+                if (categoria == "")
+                    throw new Exception("No encontrado");
+
+                var etiquetaprincipal = from b in db.Etiquetas
+                                        where b.Descorta == categoria
+                                       select b;
+
+                
+                if (etiquetaprincipal.FirstOrDefault()==null)
+                {
+                    var principal = new Etiquetas
+                    {
+                        Descorta =categoria
+                    };
+
+                    db.Etiquetas.Add(principal);
+                    db.SaveChanges();
+
+                    etiquetaprincipal = from b in db.Etiquetas
+                                        where b.Descorta == categoria
+                                        select b;
+
+                }
+
+
+                if (et.Length > 2)
+                {
+                    var etiquetaOne = etiquetaprincipal.First();
+                    var secundario = from b in db.Etiquetas
+                                            where b.Descorta ==seccion && b.IdSeccion== etiquetaOne.IdEtiqueta
+                                     select b;
+
+                    if (secundario.FirstOrDefault() == null)
+                    {
+                        var crearSecundario = new Etiquetas
+                        {
+                            Descorta = seccion,
+                            IdSeccion = etiquetaOne.IdEtiqueta
+                        };
+
+                        db.Etiquetas.Add(crearSecundario);
+
+                        db.SaveChanges();
+                        etiquetaprincipal = from b in db.Etiquetas
+                                            where b.Descorta == seccion && b.IdSeccion == etiquetaOne.IdEtiqueta
+                                            select b;
+
+                        return etiquetaprincipal.First();
+                    }
+
+                    else
+                    {
+                        return secundario.First();
+                    }
+
+
+                }
+                else
+                    return etiquetaprincipal.First();
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 

@@ -14,19 +14,10 @@ namespace Data
     
     public partial class Gastos
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Gastos()
-        {
-            this.Etiquetas = new HashSet<Etiquetas>();
-        }
-    
         public int IdGasto { get; set; }
         public float Importe { get; set; }
         public System.DateTime Fecha { get; set; }
+        public Nullable<int> IdEtiqueta { get; set; }
         public string Descorta { get; set; }
-        public string Deslarga { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Etiquetas> Etiquetas { get; set; }
     }
 }

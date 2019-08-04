@@ -47,9 +47,7 @@ namespace WebGastos.Controllers
                         if (param.Fecha == null)
                             param.Fecha = DateTime.UtcNow;
 
-                        if (param.Descorta == null)
-                            param.Descorta = "";
-
+                       
                         var aux = new Data.Gastos
                         {
                             Descorta = param.Descorta,
@@ -58,17 +56,10 @@ namespace WebGastos.Controllers
                             IdEtiqueta= e.IdEtiqueta
                             
                         };
-
-
+                        
                         db.Gastos.Add(aux);
                         db.SaveChanges();
-
-                        
-                        
-
-
-                    }
-
+                   }
 
                     return RedirectToAction("Index");
                 }
@@ -90,70 +81,60 @@ namespace WebGastos.Controllers
                 var seccion = et.Length>2 ? et[2]: "";
 
                 if (categoria == "")
-                    throw new Exception("No encontrado");
+                    throw new Exception("No encontrado ninguna etiqueta válida");
 
-                var etiquetaprincipal = from b in db.Etiquetas
-                                        where b.Descorta == categoria
-                                       select b;
 
-                
-                if (etiquetaprincipal.FirstOrDefault()==null)
-                {
-                    var principal = new Etiquetas
-                    {
-                        Descorta =categoria
-                    };
-
-                    db.Etiquetas.Add(principal);
-                    db.SaveChanges();
-
-                    etiquetaprincipal = from b in db.Etiquetas
-                                        where b.Descorta == categoria
-                                        select b;
-
-                }
-
+                var etiqueta = BuscaroInsertar(categoria, null, db);
 
                 if (et.Length > 2)
                 {
-                    var etiquetaOne = etiquetaprincipal.First();
-                    var secundario = from b in db.Etiquetas
-                                            where b.Descorta ==seccion && b.IdSeccion== etiquetaOne.IdEtiqueta
-                                     select b;
-
-                    if (secundario.FirstOrDefault() == null)
-                    {
-                        var crearSecundario = new Etiquetas
-                        {
-                            Descorta = seccion,
-                            IdSeccion = etiquetaOne.IdEtiqueta
-                        };
-
-                        db.Etiquetas.Add(crearSecundario);
-
-                        db.SaveChanges();
-                        etiquetaprincipal = from b in db.Etiquetas
-                                            where b.Descorta == seccion && b.IdSeccion == etiquetaOne.IdEtiqueta
-                                            select b;
-
-                        return etiquetaprincipal.First();
-                    }
-
-                    else
-                    {
-                        return secundario.First();
-                    }
-
-
+                    return BuscaroInsertar(seccion, etiqueta.IdEtiqueta, db);
                 }
                 else
-                    return etiquetaprincipal.First();
-                
+                    return etiqueta;
+
+
+
             }
             catch (Exception e)
             {
                 throw e;
             }
+        }
+
+        private Data.Etiquetas BuscaroInsertar(string categoria, int? seccion, AplicacionesEntities1 db)
+        {
+
+            IQueryable<Data.Etiquetas> etiquetaprincipal;
+
+            if (seccion==null)
+              etiquetaprincipal = from b in db.Etiquetas
+                                    where b.Descorta == categoria
+                                    select b;
+            else
+
+               etiquetaprincipal = from b in db.Etiquetas
+                                    where b.Descorta == categoria && b.IdSeccion==seccion.Value
+                                    select b;
+
+            if (etiquetaprincipal.FirstOrDefault() == null)
+            {
+                var principal = new Etiquetas
+                {
+                    Descorta = categoria
+                };
+
+                if (seccion.HasValue)
+                    principal.IdSeccion = seccion.Value;
+
+                db.Etiquetas.Add(principal);
+                db.SaveChanges();
+                return principal;
+
+                
+            }
+            return etiquetaprincipal.First();
+
         }
 
         // GET: Gastos/Edit/5

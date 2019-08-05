@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Graficos Page";
+}
+
+<div class="jumbotron">
+    <h1>Resultados de Gráfico</h1>
+</div>
+
+<div class="row">
+    <form method="get" action="Graficos">
+    <div>
+        Tipo de resultados:
+        <select name="tipo">
+            <option value="y">Anual</option>
+            <option value="m">Mensual</option>
+            <option value="d">Diaria</option>
+        </select>
+
+        <div class="col-md-12 col-md-6">
+            @(Model)
+        </div>
+
+
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Graficos" class="btn btn-default" />
+        </div>
+    </div>
+    </form>
+</div>  

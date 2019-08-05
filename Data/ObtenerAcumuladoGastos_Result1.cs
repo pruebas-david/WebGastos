@@ -11,7 +11,7 @@ namespace Data
 {
     using System;
     
-    public partial class ObtenerAcumuladoGastos_Result
+    public partial class ObtenerAcumuladoGastos_Result1
     {
         public Nullable<int> intervalo { get; set; }
         public string descorta { get; set; }

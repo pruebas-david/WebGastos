@@ -60,9 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BussinesDatos.cs" />
     <Compile Include="BussinesGastos.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Modelos\EtiquetaModel.cs" />
+    <Compile Include="Modelos\ResultadosModel.cs" />
     <Compile Include="Modelos\GastoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

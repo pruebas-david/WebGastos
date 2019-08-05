@@ -55,14 +55,19 @@
         <EntityContainer Name="AplicacionesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" />
-          <FunctionImport Name="ObtenerAcumuladoGastos" ReturnType="Collection(AplicacionesModel.ObtenerAcumuladoGastos_Result)">
-            <Parameter Name="agrupacion" Mode="In" Type="String" />
+          <FunctionImport Name="ObtenerAcumuladoGastos" ReturnType="Collection(AplicacionesModel.ObtenerAcumuladoGastos_Result1)">
+          <Parameter Name="agrupacion" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="ObtenerAcumuladoGastos_Result">
           <Property Type="Int32" Name="intervalo" Nullable="true" />
           <Property Type="String" Name="descorta" Nullable="true" MaxLength="250" />
-          <Property Type="Double" Name="Column1" Nullable="true" />
+          <Property Type="Double" Name="importe" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ObtenerAcumuladoGastos_Result1">
+          <Property Type="Int32" Name="intervalo" Nullable="true" />
+          <Property Type="String" Name="descorta" Nullable="true" MaxLength="250" />
+          <Property Type="Double" Name="importe" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -91,11 +96,11 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="ObtenerAcumuladoGastos" FunctionName="AplicacionesModel.Store.ObtenerAcumuladoGastos">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AplicacionesModel.ObtenerAcumuladoGastos_Result">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="AplicacionesModel.ObtenerAcumuladoGastos_Result1">
                 <ScalarProperty Name="intervalo" ColumnName="intervalo" />
                 <ScalarProperty Name="descorta" ColumnName="descorta" />
-                <ScalarProperty Name="Column1" ColumnName="Column1" />
+                <ScalarProperty Name="importe" ColumnName="importe" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

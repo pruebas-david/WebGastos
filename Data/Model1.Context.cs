@@ -12,11 +12,13 @@ namespace Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AplicacionesEntities : DbContext
     {
         public AplicacionesEntities()
-            : base("name=AplicacionesEntities1")
+            : base("name=AplicacionesEntities")
         {
         }
     
@@ -27,5 +29,14 @@ namespace Data
     
         public virtual DbSet<Etiquetas> Etiquetas { get; set; }
         public virtual DbSet<Gastos> Gastos { get; set; }
+    
+        public virtual ObjectResult<ObtenerAcumuladoGastos_Result> ObtenerAcumuladoGastos(string agrupacion)
+        {
+            var agrupacionParameter = agrupacion != null ?
+                new ObjectParameter("agrupacion", agrupacion) :
+                new ObjectParameter("agrupacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerAcumuladoGastos_Result>("ObtenerAcumuladoGastos", agrupacionParameter);
+        }
     }
 }

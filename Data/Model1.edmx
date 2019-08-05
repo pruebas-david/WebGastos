@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AplicacionesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AplicacionesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Etiquetas">
           <Key>
             <PropertyRef Name="IdEtiqueta" />
@@ -23,12 +23,14 @@
           <Property Name="IdEtiqueta" Type="int" />
           <Property Name="Descorta" Type="varchar" MaxLength="250" Nullable="false" />
         </EntityType>
+        <Function Name="ObtenerAcumuladoGastos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="agrupacion" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="AplicacionesModelStoreContainer">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" Schema="WebGastos" store:Type="Tables" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" Schema="WebGastos" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AplicacionesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -53,7 +55,15 @@
         <EntityContainer Name="AplicacionesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" />
+          <FunctionImport Name="ObtenerAcumuladoGastos" ReturnType="Collection(AplicacionesModel.ObtenerAcumuladoGastos_Result)">
+            <Parameter Name="agrupacion" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="ObtenerAcumuladoGastos_Result">
+          <Property Type="Int32" Name="intervalo" Nullable="true" />
+          <Property Type="String" Name="descorta" Nullable="true" MaxLength="250" />
+          <Property Type="Double" Name="Column1" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -80,6 +90,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ObtenerAcumuladoGastos" FunctionName="AplicacionesModel.Store.ObtenerAcumuladoGastos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AplicacionesModel.ObtenerAcumuladoGastos_Result">
+                <ScalarProperty Name="intervalo" ColumnName="intervalo" />
+                <ScalarProperty Name="descorta" ColumnName="descorta" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

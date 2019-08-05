@@ -50,7 +50,7 @@
           <Property Name="IdEtiqueta" Type="Int32" />
           <Property Name="Descorta" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="AplicacionesEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AplicacionesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Etiquetas" EntityType="Self.Etiquetas" />
           <EntitySet Name="Gastos" EntityType="Self.Gastos" />
         </EntityContainer>
@@ -59,7 +59,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AplicacionesModelStoreContainer" CdmEntityContainer="AplicacionesEntities1">
+        <EntityContainerMapping StorageEntityContainer="AplicacionesModelStoreContainer" CdmEntityContainer="AplicacionesEntities">
           <EntitySetMapping Name="Etiquetas">
             <EntityTypeMapping TypeName="AplicacionesModel.Etiquetas">
               <MappingFragment StoreEntitySet="Etiquetas">
